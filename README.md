@@ -46,3 +46,7 @@ Modules:
 	     Admin can add trains into  repository
    3.Remove trains:
 	     Admin can remove specified train.
+	 
+Pojo classes:
+   1.Train,
+   2.Passenger.
