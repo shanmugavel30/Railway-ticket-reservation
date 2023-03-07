@@ -1,6 +1,6 @@
 # Railway-ticket-reservation
 
-				Train reservation application with thakkal tickets
+				Train ticket reservation application with thakkal 
 
 Modules:<br>
 	1.Login
