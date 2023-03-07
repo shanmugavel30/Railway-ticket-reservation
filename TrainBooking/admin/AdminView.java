@@ -56,7 +56,7 @@ public class AdminView implements ControllerToView{
 	public void allTrainsList(List<Train> allTrains) {
 		System.out.printf("\n %10s %13s %13s %13s %13s %13s %13s %13s %13s %13s","TrainId","Source","Destination","Date","NoOfSheets","UpperSeats","MiddleSeats","LowerSeats","RAC","WaitingList");
 		for(int i=0;i<allTrains.size();i++) {
-			System.out.printf("\n %10s  %13s %13s %13s %13s %12s %12s %12s %13s %13s",allTrains.get(i).getTrainId(),allTrains.get(i).getSource(),allTrains.get(i).getDestination(),allTrains.get(i).getDate(),allTrains.get(i).getNoOfTicket(),
+			System.out.printf("\n %10s  %13s %13s %13s %13s %12s %12s %12s %13s %13s",allTrains.get(i).getTrainId(),allTrains.get(i).getsource(),allTrains.get(i).getdestination(),allTrains.get(i).getdate(),allTrains.get(i).getNoOfTicket(),
 					allTrains.get(i).getUpperSeats(),allTrains.get(i).getMiddleSeats(),allTrains.get(i).getLowerSeats(),allTrains.get(i).getRac(),allTrains.get(i).getWaitingList());
 		}
 		adminChoices();
