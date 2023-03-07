@@ -1,220 +1,269 @@
 package com.TrainBooking.TrainDetails;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 
-public class Train {
-		private int trainId;
-		private String Source;
-		private String Destination;
-		private String Date;
-		private int noOfTicket;
-		private int upperSeats;
-		private int middleSeats;
-		private int lowerSeats;
-		private int rac;
-		private int waitingList;
-		private List<Integer> lowerBerthsPositions; 
-	    private List<Integer> middleBerthsPositions;
-	    private List<Integer> upperBerthsPositions; 
-	    private List<Integer> racPositions ;
-	    private List<Integer> waitingListPositions ;
-	    private List<Integer> thakkalSeats;
-	    private int thakkal;
-	    private int thakkalAmount;
-	    private int amount;
+import com.TrainBooking.passengerDetails.Passenger;
 
-		
-		public Train(int trainId,String Source,String Destination,String Date,int noOfTicket,int amount,int thakkalAmount) {
-			this.setTrainId(trainId);
-			this.setSource(Source);
-			this.setDestination(Destination);
-			this.setDate(Date); 
-			this.noOfTicket=noOfTicket;
-			this.amount=amount;
-			this.thakkalAmount=thakkalAmount;
-			upperSeats=noOfTicket/3;
-			middleSeats=noOfTicket/3;
-			lowerSeats=noOfTicket/3;
-			rac=10;
-			waitingList=5;
-			thakkal=15;
-			lowerBerthsPositions= new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15));
-			middleBerthsPositions= new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15));
-			upperBerthsPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15));
-			racPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
-			waitingListPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5));
-			thakkalSeats=new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15));
-				
+public class TrainBookingDetailRepository {
+
+	private static TrainBookingDetailRepository repInstance;
+	public Map<Integer, Train> trainDetails = new HashMap<>();
+	private Train train;
+	public boolean flag = true;
+
+	Queue<Integer> waitingList = new LinkedList<>();
+	Queue<Integer> racList = new LinkedList<>();
+	List<Integer> bookedTicketList = new ArrayList<>();
+
+	Map<Integer, Passenger> passengers = new HashMap<>();
+
+	private TrainBookingDetailRepository() {
+
+	}
+
+	public static TrainBookingDetailRepository getInstance() {
+		if (repInstance == null) {
+			repInstance = new TrainBookingDetailRepository();
+			repInstance.trainDetails();
+
+		}
+		return repInstance;
+	}
+
+	public void trainDetails() {
+		train = new Train(01, "tenkasi", "chennai", "28/02/23", 45, 250, 320);
+		trainDetails.put(01, train);
+		train = new Train(02, "tenkasi", "madurai", "01/03/23", 45, 75, 120);
+		trainDetails.put(02, train);
+		train = new Train(03, "tenkasi", "tirunelveli", "28/02/23", 45, 40, 60);
+		trainDetails.put(03, train);
+		train = new Train(04, "tenkasi", "chennai", "03/03/23", 45, 260, 340);
+		trainDetails.put(04, train);
+	}
+
+	public List<Train> getTrains(String source, String destination, String date) {
+
+		List<Train> trainsList = new ArrayList<>();
+		for (Map.Entry<Integer, Train> entry : trainDetails.entrySet()) {
+
+			if (entry.getValue().getsource().equalsIgnoreCase(source)
+					&& entry.getValue().getdestination().equalsIgnoreCase(destination)
+					&& entry.getValue().getdate().equalsIgnoreCase(date)) {
+
+				trainsList.add(entry.getValue());
+			}
+		}
+		return trainsList;
+	}
+
+	public List<String> bookTickets(int trainId, Passenger passenger, int numOfTickets) {
+		Map<Integer, Train> traintoBook = new HashMap<>();
+		List<String> result = new ArrayList<>();
+		int amount = trainDetails.get(trainId).getAmount() * numOfTickets;
+		if (trainDetails.containsKey(trainId)) {
+			Train train1 = new Train(trainId);
+			traintoBook.put(trainId, train1);
+		}
+		if (traintoBook.get(trainId).getWaitingList() == 0) {
+
+			return result;
+		}
+		if ((passenger.getBerthpreference().equalsIgnoreCase("U") && traintoBook.get(trainId).getUpperSeats() > 0)
+				|| (passenger.getBerthpreference().equalsIgnoreCase("M")
+						&& traintoBook.get(trainId).getMiddleSeats() > 0)
+				|| (passenger.getBerthpreference().equalsIgnoreCase("L")
+						&& traintoBook.get(trainId).getLowerSeats() > 0)) {
+
+			if (passenger.getBerthpreference().equalsIgnoreCase("L")) {
+
+				ticketBookingatPreferredberth(passenger, traintoBook.get(trainId).getLowerBerthsPositions().get(0),
+						"L");
+				traintoBook.get(trainId).getLowerBerthsPositions().remove(0);
+				traintoBook.get(trainId).setLowerSeats(traintoBook.get(trainId).getLowerSeats() - 1);
+				result.add("lower");
+				return result;
+			}
+
+			else if (passenger.getBerthpreference().equalsIgnoreCase("M")) {
+
+				ticketBookingatPreferredberth(passenger, traintoBook.get(trainId).getMiddleBerthsPositions().get(0),
+						"M");
+				traintoBook.get(trainId).getMiddleBerthsPositions().remove(0);
+				traintoBook.get(trainId).setMiddleSeats(traintoBook.get(trainId).getMiddleSeats() - 1);
+				result.add("middle");
+				return result;
+			}
+
+			else if (passenger.getBerthpreference().equalsIgnoreCase("U")) {
+
+				ticketBookingatPreferredberth(passenger, traintoBook.get(trainId).getMiddleBerthsPositions().get(0),
+						"U");
+				traintoBook.get(trainId).getUpperBerthsPositions().remove(0);
+				traintoBook.get(trainId).setUpperSeats(traintoBook.get(trainId).getUpperSeats() - 1);
+				result.add("upper");
+				return result;
+
+			}
+
+			else if (traintoBook.get(trainId).getLowerSeats() > 0) {
+
+				ticketBookingatPreferredberth(passenger, traintoBook.get(trainId).getLowerBerthsPositions().get(0),
+						"L");
+				traintoBook.get(trainId).getLowerBerthsPositions().remove(0);
+				traintoBook.get(trainId).setLowerSeats(traintoBook.get(trainId).getLowerSeats() - 1);
+				result.add("lower");
+				return result;
+			} else if (traintoBook.get(trainId).getMiddleSeats() > 0) {
+
+				ticketBookingatPreferredberth(passenger, traintoBook.get(trainId).getMiddleBerthsPositions().get(0),
+						"L");
+				traintoBook.get(trainId).getMiddleBerthsPositions().remove(0);
+				traintoBook.get(trainId).setMiddleSeats(traintoBook.get(trainId).getMiddleSeats() - 1);
+				result.add("middle");
+				return result;
+			} else if (traintoBook.get(trainId).getUpperSeats() > 0) {
+
+				ticketBookingatPreferredberth(passenger, traintoBook.get(trainId).getUpperBerthsPositions().get(0),
+						"L");
+				traintoBook.get(trainId).getUpperBerthsPositions().remove(0);
+				traintoBook.get(trainId).setUpperSeats(traintoBook.get(trainId).getUpperSeats() - 1);
+				result.add("upper");
+				return result;
+			} else if (traintoBook.get(trainId).getRac() > 0) {
+
+				bookToRAC(passenger, (traintoBook.get(trainId).getRacPositions().get(0)), "RAC");
+				traintoBook.get(trainId).getRacPositions().remove(0);
+				traintoBook.get(trainId).setRac(traintoBook.get(trainId).getRac() - 1);
+				result.add("rac");
+				return result;
+			} else {
+
+				bookToWaitingList(passenger, (traintoBook.get(trainId).getWaitingListPositions().get(0)), "WL");
+				traintoBook.get(trainId).getWaitingListPositions().remove(0);
+				traintoBook.get(trainId).setWaitingList(traintoBook.get(trainId).getWaitingList());
+				result.add("waitingList");
+				return result;
+			}
+
+		}
+		return result;
+
+	}
+
+	private void bookToWaitingList(Passenger passenger, int waitList, String allotBerth) {
+		passenger.setSeatNumber(waitList);
+		passenger.setAllottedBerth(allotBerth);
+
+		passengers.put(passenger.getPassId(), passenger);
+
+		bookedTicketList.add(passenger.getPassId());
+
+	}
+
+	private void bookToRAC(Passenger passenger, int racPos, String allotBerth) {
+
+		passenger.setSeatNumber(racPos);
+		passenger.setAllottedBerth(allotBerth);
+
+		passengers.put(passenger.getPassId(), passenger);
+
+		bookedTicketList.add(passenger.getPassId());
+
+	}
+
+	private void ticketBookingatPreferredberth(Passenger passenger, int berthPos, String allotBerth) {
+
+		passenger.setSeatNumber(berthPos);
+		passenger.setAllottedBerth(allotBerth);
+
+		passengers.put(passenger.getPassId(), passenger);
+
+		bookedTicketList.add(passenger.getPassId());
+
+	}
+
+	public List<Integer> showticketsForTrain(int trainId) {
+		Map<Integer, Train> tickettoShow = new HashMap<>();
+		List<Integer> result = new ArrayList<>();
+		if (trainDetails.containsKey(trainId)) {
+			Train trainticket = new Train(trainId);
+			tickettoShow.put(trainId, trainticket);
 		}
 
-		public Train(int trainId) {
-			this.setTrainId(trainId);
-			this.setSource(Source);
-			this.setDestination(Destination);
-			this.setDate(Date); 
-			upperSeats=noOfTicket/3;
-			middleSeats=noOfTicket/3;
-			lowerSeats=noOfTicket/3;
-			rac=10;
-			waitingList=5;
-			lowerBerthsPositions= new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15));
-			middleBerthsPositions= new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15));
-			upperBerthsPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15));
-			racPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
-			waitingListPositions = new ArrayList<>(Arrays.asList(1,2,3,4,5));
+		result.add(tickettoShow.get(trainId).getLowerSeats());
+		result.add(tickettoShow.get(trainId).getMiddleSeats());
+		result.add(tickettoShow.get(trainId).getUpperSeats());
+		return result;
+	}
+
+	public List<Train> showAllTrains() {
+		List<Train> alltrainsList = new ArrayList<>();
+		for (Map.Entry<Integer, Train> entry : trainDetails.entrySet()) {
+			alltrainsList.add(entry.getValue());
+		}
+		return alltrainsList;
+	}
+
+	public void cancelTicket(int passengerId, int trainId) {
+
+		Passenger p = passengers.get(passengerId);
+		if (p != null) {
+			passengers.remove(Integer.valueOf(passengerId));
+
+			bookedTicketList.remove(Integer.valueOf(passengerId));
+
+			int positionBooked = p.getSeatNumber();
+			flag = false;
+
+			if (p.getAllottedBerth().equals("L")) {
+				trainDetails.get(trainId).setLowerSeats(trainDetails.get(trainId).getLowerSeats() + 1);
+				trainDetails.get(trainId).getLowerBerthsPositions().add(positionBooked);
+			} else if (p.getAllottedBerth().equals("M")) {
+				trainDetails.get(trainId).setMiddleSeats(trainDetails.get(trainId).getMiddleSeats() + 1);
+				trainDetails.get(trainId).getMiddleBerthsPositions().add(positionBooked);
+			} else if (p.getAllottedBerth().equals("U")) {
+				trainDetails.get(trainId).setUpperSeats(trainDetails.get(trainId).getUpperSeats() + 1);
+				trainDetails.get(trainId).getUpperBerthsPositions().add(positionBooked);
+			}
+
+		}
+	}
+
+	public boolean bookThakkalTicket(int trainId, Passenger p, int numOfTickets) {
+		int amount = trainDetails.get(trainId).getThakkalAmount() * numOfTickets;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy");
+		String currentDate = LocalDateTime.now().format(formatter);
+		char c = trainDetails.get(trainId).getdate().charAt(1);
+		char s = trainDetails.get(trainId).getdate().charAt(4);
+
+		if (Integer.valueOf(c) == (int) currentDate.charAt(1) + 1
+				&& Integer.valueOf(s) == (int) currentDate.charAt(4)) {
+			trainDetails.get(trainId).getThakkalSeats().remove(0);
+			trainDetails.get(trainId).setThakkal(trainDetails.get(trainId).getThakkal() + 1);
+			return true;
+		} else {
+			return false;
 		}
 
-		public int getTrainId() {
-			return trainId;
-		}
+	}
 
-		public void setTrainId(int trainId) {
-			this.trainId = trainId;
-		}
+	public void addTrain(int trainId, String source, String destination, String date, int numOfTickets, int amount,
+			int thakkalamount) {
+		train = new Train(trainId, source, destination, date, numOfTickets, amount, thakkalamount);
+		trainDetails.put(trainId, train);
+	}
 
-		public String getSource() {
-			return Source;
+	public void removeTrain(int trainId) {
+		if (trainDetails.containsKey(trainId)) {
+			trainDetails.remove(trainId);
+			flag = false;
 		}
-
-		public void setSource(String source) {
-			Source = source;
-		}
-
-		public String getDestination() {
-			return Destination;
-		}
-
-		public void setDestination(String destination) {
-			Destination = destination;
-		}
-
-		public String getDate() {
-			return Date;
-		}
-
-		public void setDate(String date) {
-			Date = date;
-		}
-
-		public int getNoOfTicket() {
-			return noOfTicket;
-		}
-
-		public void setNoOfTicket(int noOfTicket) {
-			this.noOfTicket = noOfTicket;
-		}
-
-		public int getUpperSeats() {
-			return upperSeats;
-		}
-
-		public void setUpperSeats(int upperSeats) {
-			this.upperSeats = upperSeats;
-		}
-
-		public int getMiddleSeats() {
-			return middleSeats;
-		}
-
-		public void setMiddleSeats(int middleSeats) {
-			this.middleSeats = middleSeats;
-		}
-
-		public int getLowerSeats() {
-			return lowerSeats;
-		}
-
-		public void setLowerSeats(int lowerSeats) {
-			this.lowerSeats = lowerSeats;
-		}
-
-		public int getRac() {
-			return rac;
-		}
-
-		public void setRac(int rac) {
-			this.rac = rac;
-		}
-
-		public int getWaitingList() {
-			return waitingList;
-		}
-
-		public void setWaitingList(int waitingList) {
-			this.waitingList = waitingList;
-		}
-
-		public List<Integer> getLowerBerthsPositions() {
-			return lowerBerthsPositions;
-		}
-
-		public void setLowerBerthsPositions(List<Integer> lowerBerthsPositions) {
-			this.lowerBerthsPositions = lowerBerthsPositions;
-		}
-
-		public List<Integer> getMiddleBerthsPositions() {
-			return middleBerthsPositions;
-		}
-
-		public void setMiddleBerthsPositions(List<Integer> middleBerthsPositions) {
-			this.middleBerthsPositions = middleBerthsPositions;
-		}
-
-		public List<Integer> getUpperBerthsPositions() {
-			return upperBerthsPositions;
-		}
-
-		public void setUpperBerthsPositions(List<Integer> upperBerthsPositions) {
-			this.upperBerthsPositions = upperBerthsPositions;
-		}
-
-		public List<Integer> getRacPositions() {
-			return racPositions;
-		}
-
-		public void setRacPositions(List<Integer> racPositions) {
-			this.racPositions = racPositions;
-		}
-
-		public List<Integer> getWaitingListPositions() {
-			return waitingListPositions;
-		}
-
-		public void setWaitingListPositions(List<Integer> waitingListPositions) {
-			this.waitingListPositions = waitingListPositions;
-		}
-
-		public int getThakkal() {
-			return thakkal;
-		}
-
-		public void setThakkal(int thakkal) {
-			this.thakkal = thakkal;
-		}
-
-		public List<Integer> getThakkalSeats() {
-			return thakkalSeats;
-		}
-
-		public void setThakkalSeats(List<Integer> thakkalSeats) {
-			this.thakkalSeats = thakkalSeats;
-		}
-
-		public int getAmount() {
-			return amount;
-		}
-
-		public void setAmount(int amount) {
-			this.amount = amount;
-		}
-
-		public int getThakkalAmount() {
-			return thakkalAmount;
-		}
-
-		public void setThakkalAmount(int thakkalAmount) {
-			this.thakkalAmount = thakkalAmount;
-		}
+	}
 }
