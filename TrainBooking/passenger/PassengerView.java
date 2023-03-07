@@ -4,6 +4,7 @@ import java.util.*;
 import com.TrainBooking.TrainDetails.Train;
 import com.TrainBooking.booking.BookingView;
 import com.TrainBooking.cancel.CancelView;
+import com.TrainBooking.login.LoginView;
 public class PassengerView implements ControllerToView{
 	private ViewToController passcontroller;
 	private Scanner scan=new Scanner(System.in);
@@ -24,6 +25,10 @@ public class PassengerView implements ControllerToView{
 		else if(opt==3) {
 			CancelView ref=new CancelView();
 			ref.cancelTicket();
+		}
+		else if(opt==4) {
+			LoginView ref=new LoginView();
+			ref.loginWeb();
 		}
 		else {
 			System.out.println("You are exitted...!");
@@ -49,7 +54,7 @@ public class PassengerView implements ControllerToView{
 	public void trainFound(List<Train> trainsList) {
 		System.out.printf("\n %10s %13s %13s %13s %13s %13s %13s %13s %13s %13s","TrainId","Source","Destination","Date","NoOfSheets","UpperSeats","MiddleSeats","LowerSeats","RAC","WaitingList");
 		for(int i=0;i<trainsList.size();i++) {
-			System.out.printf("\n %10s  %13s %13s %13s %13s %12s %12s %12s %13s %13s",trainsList.get(i).getTrainId(),trainsList.get(i).getSource(),trainsList.get(i).getDestination(),trainsList.get(i).getDate(),trainsList.get(i).getNoOfTicket(),
+			System.out.printf("\n %10s  %13s %13s %13s %13s %12s %12s %12s %13s %13s",trainsList.get(i).getTrainId(),trainsList.get(i).getsource(),trainsList.get(i).getdestination(),trainsList.get(i).getdate(),trainsList.get(i).getNoOfTicket(),
 					trainsList.get(i).getUpperSeats(),trainsList.get(i).getMiddleSeats(),trainsList.get(i).getLowerSeats(),trainsList.get(i).getRac(),trainsList.get(i).getWaitingList());
 		}
 		System.out.println();
@@ -62,10 +67,11 @@ public class PassengerView implements ControllerToView{
 	public void allTrainsList(List<Train> allTrains) {
 		System.out.printf("\n %10s %13s %13s %13s %13s %13s %13s %13s %13s %13s","TrainId","Source","Destination","Date","NoOfSheets","UpperSeats","MiddleSeats","LowerSeats","RAC","WaitingList");
 		for(int i=0;i<allTrains.size();i++) {
-			System.out.printf("\n %10s  %13s %13s %13s %13s %12s %12s %12s %13s %13s",allTrains.get(i).getTrainId(),allTrains.get(i).getSource(),allTrains.get(i).getDestination(),allTrains.get(i).getDate(),allTrains.get(i).getNoOfTicket(),
+			System.out.printf("\n %10s  %13s %13s %13s %13s %12s %12s %12s %13s %13s",allTrains.get(i).getTrainId(),allTrains.get(i).getsource(),allTrains.get(i).getdestination(),allTrains.get(i).getdate(),allTrains.get(i).getNoOfTicket(),
 					allTrains.get(i).getUpperSeats(),allTrains.get(i).getMiddleSeats(),allTrains.get(i).getLowerSeats(),allTrains.get(i).getRac(),allTrains.get(i).getWaitingList());
 		}
 		System.out.println();
 		main();
 	}
 }
+
