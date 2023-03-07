@@ -19,7 +19,7 @@ Modules:<br>
 2.Passenger module:<br>
    1.Book:<br>
 	    In book tickets,there are two types:<br>
-	       1.Normal tickets 2.Thakkal tickets
+	       1.Normal tickets<br> 2.Thakkal tickets<br>
 	    1.Normal Tickets:<br>
 	       First of all, passenger can search the train based on their  respective source and destination.
 	       After saw the trains,we can give trainId  to book train tickets.
