@@ -39,11 +39,11 @@ public class Train {
 		this.lowerSeats = noOfTicket / 3;
 		this.rac = 10;
 		this.waitingList = 5;
-		this.lowerBerthsPositions = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15));
-		this.middleBerthsPositions = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15));
-		this.upperBerthsPositions = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15));
-		this.racPositions = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
-		this.waitingListPositions = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+		this.lowerBerthsPositions = new ArrayList<>;
+		this.middleBerthsPositions = new ArrayList<>;
+		this.upperBerthsPositions = new ArrayList<>;
+		this.racPositions = new ArrayList<>;
+		this.waitingListPositions = new ArrayList<>;
 	}
 
 	public Train(int trainId) {
@@ -56,11 +56,11 @@ public class Train {
 		this.lowerSeats = noOfTicket / 3;
 		this.rac = 10;
 		this.waitingList = 5;
-		this.lowerBerthsPositions = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15));
-		this.middleBerthsPositions = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15));
-		this.upperBerthsPositions = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15));
-		this.racPositions = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
-		this.waitingListPositions = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+		this.lowerBerthsPositions = new ArrayList<>;
+		this.middleBerthsPositions = new ArrayList<>;
+		this.upperBerthsPositions = new ArrayList<>;
+		this.racPositions = new ArrayList<>;
+		this.waitingListPositions = new ArrayList<>;
 	}
 
 	public int getTrainId() {
