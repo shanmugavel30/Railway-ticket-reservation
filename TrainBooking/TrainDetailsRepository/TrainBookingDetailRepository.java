@@ -24,6 +24,14 @@ public class TrainBookingDetailRepository {
 	List<Integer> bookedTicketList = new ArrayList<>();
 
 	Map<Integer, Passenger> passengers = new HashMap<>();
+	for(int i=1;i<10;i++){
+		waitingList.add(i);
+	}
+	for(int i=1;i<15;i++){
+		racList.add(i);
+	}
+	
+	
 
 	private TrainBookingDetailRepository() {
 
