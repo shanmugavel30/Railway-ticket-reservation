@@ -18,8 +18,8 @@ public class Train {
 	private List<Integer> lowerBerthsPositions;
 	private List<Integer> middleBerthsPositions;
 	private List<Integer> upperBerthsPositions;
-	private List<Integer> racPositions;
-	private List<Integer> waitingListPositions;
+	private Queue<Integer> racPositions;
+	private Queue<Integer> waitingListPositions;
 	private List<Integer> thakkalSeats;
 	private int thakkal;
 	private int thakkalAmount;
