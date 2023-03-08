@@ -42,8 +42,8 @@ public class Train {
 		this.lowerBerthsPositions = new ArrayList<>;
 		this.middleBerthsPositions = new ArrayList<>;
 		this.upperBerthsPositions = new ArrayList<>;
-		this.racPositions = new ArrayList<>;
-		this.waitingListPositions = new ArrayList<>;
+		this.racPositions = new LinkedList<>;
+		this.waitingListPositions = new LinkedList<>;
 	}
 
 	public Train(int trainId) {
@@ -59,8 +59,8 @@ public class Train {
 		this.lowerBerthsPositions = new ArrayList<>;
 		this.middleBerthsPositions = new ArrayList<>;
 		this.upperBerthsPositions = new ArrayList<>;
-		this.racPositions = new ArrayList<>;
-		this.waitingListPositions = new ArrayList<>;
+		this.racPositions = new LinkedList<>;
+		this.waitingListPositions = new LinkedList<>;
 	}
 
 	public int getTrainId() {
