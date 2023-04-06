@@ -8,7 +8,7 @@ Modules:<br>
 	3.Admin
 
 1.Login module<br>
-   1.Passenger login:<br>
+     1.Passenger login:<br>
 	     Get the name of passenger,
 	     Get the password,
 	     Password length should be greater than 8 characters.
