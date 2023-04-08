@@ -7,7 +7,7 @@
 	2.Passenger 
 	3.Admin
 
-1.Login module<br>
+## 1.Login module<br>
      1.Passenger login:<br>
 	     Get the name of passenger,
 	     Get the password,
@@ -16,7 +16,7 @@
 	     Here,Only one admin is available,
 	     After give the admin name and admin password,You can enter into admin module.
 
-2.Passenger module:<br>
+## 2.Passenger module:<br>
    1.Book:<br>
 	    In book tickets,there are two types:<br>
 	       1.Normal tickets<br> 2.Thakkal tickets<br><br>
@@ -39,7 +39,7 @@
 	       After the cancel ticket,passenger details will be removed from the hash map.
 	       preferred berth and seats will be increase in this trainId.<br><br>
 	    
-3.Admin:<br>
+## 3.Admin:<br>
    1.Show all trains:<br>
     	 Here,we can see all trains.<br>
    2.Add train:<br>
