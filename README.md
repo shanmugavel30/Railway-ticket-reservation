@@ -56,6 +56,6 @@
 	    -->Admin can remove specified train.
 	 
 ## Pojo classes:
-   1.Train,
-   2.Passenger.
+       1.Train,
+       2.Passenger.
   
