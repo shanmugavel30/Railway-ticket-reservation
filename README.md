@@ -3,7 +3,9 @@
 
 				Train ticket reservation application with thakkal 
 				
- video explanation link:
+## video explanation link:
+	https://youtu.be/TN8A63t5-Zc
+
 
 ## Modules:
 	1.Login
@@ -53,9 +55,7 @@
        3.Remove trains:
 	    -->Admin can remove specified train.
 	 
-## Pojo classes:<br>
-   1.Train,<br>
-   2.Passenger.<br><br>
-   
-	link:https://youtu.be/TN8A63t5-Zc
+## Pojo classes:
+   1.Train,
+   2.Passenger.
   
