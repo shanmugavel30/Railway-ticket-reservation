@@ -2,7 +2,7 @@
 
 				Train ticket reservation application with thakkal 
 
-Modules:<br>
+## Modules:<br>
 	1.Login
 	2.Passenger 
 	3.Admin
